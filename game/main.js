@@ -1,3 +1,8 @@
+const canvasContainer = document.getElementById('canvas-container');
+const canvas = document.createElement('canvas');
+canvasContainer.appendChild(canvas);
+const ctx = canvas.getContext('2d');
+
 function loadStats() {
     const statBar = document.getElementById('statbar');
     statBar.innerText = `
