@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Netherworld</title>
+    <style>
+        /* Dark color scheme */
+        body.dark {
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* Light color scheme */
+        body.light {
+            background-color: #fff;
+            color: #000;
+        }
+
+        /* Add your own styles here */
+
+    </style>
+</head>
+<body class="light">
+    <header>
+        <!-- Add your logo or banner image here -->
+        <h1>The Netherworld</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>About the Game</h2>
+            <p>Enter the mysterious Netherworld and embark on a thrilling adventure filled with challenging puzzles and hidden treasures.</p>
+        </section>
+
+        <section>
+            <h2>Features</h2>
+            <ul>
+                <li>Engaging puzzle-based gameplay</li>
+                <li>Immersive dungeon exploration</li>
+                <li>Discover hidden secrets and treasures</li>
+                <li>Unlock new levels and challenges</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Toggle Color Scheme</h2>
+            <button onclick="toggleColorScheme()">Toggle Dark/Light</button>
+        </section>
+    </main>
+
+    <footer>
+        <button>Play Now</button>
+    </footer>
+
+    <script>
+        function toggleColorScheme() {
+            document.body.classList.toggle('dark');
+            document.body.classList.toggle('light');
+        }
+    </script>
+</body>
+</html>
