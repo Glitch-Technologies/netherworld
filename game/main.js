@@ -22,8 +22,7 @@ Wisdom 5
 Constitution 5
 Perception 5
 Luck 5
-Status: Alive
-    `;
+Status: Alive`;
 }
 
 function main() {
