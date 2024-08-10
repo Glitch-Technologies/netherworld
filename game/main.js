@@ -27,6 +27,28 @@ Status: Alive`;
 
 function main() {
     loadStats();
+    loadTiles();
+}
+
+function loadTiles() {
+    fetch('tileref.json')
+        .then(response => response.json())
+        .then(data => {
+            Object.entries(data["tilekeys"]).forEach(([key, value]) => {
+                // Do something with each key-value pair
+                console.log(key, value);
+                const image = new Image();
+                image.src = value;
+                image.onload = () => {
+                    // Do something with the loaded image
+                    console.log('Image loaded:', image);
+                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height); // Draw the image on the canvas, scaling it to the full size of the canvas
+                };
+            })}
+        )
+        .catch(error => {
+            alert('Error loading dictionary: ' + error);
+        });
 }
 
 //Begin execution

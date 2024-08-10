@@ -1,0 +1,14 @@
+{
+    "tilekeys": {
+    "01": "/assets/tiles/grass/grass_bottom.png",
+    "00": "/assets/tiles/grass/grass_bottomleft.png",
+    "02": "/assets/tiles/grass/grass_bottomright.png",
+    "04": "/assets/tiles/grass/grass_full.png",
+    "03": "/assets/tiles/grass/grass_left.png",
+    "05": "/assets/tiles/grass/grass_right.png",
+    "07": "/assets/tiles/grass/grass_top.png",
+    "06": "/assets/tiles/grass/grass_topleft.png",
+    "08": "/assets/tiles/grass/grass_topright.png",
+    "09": "/assets/tiles/path/path_full.png"
+    }
+}
