@@ -1,0 +1,7 @@
+- Dungeons and Dragons 5e, for base universe and rules.
+- Zork I, II, III. An initial interface design as well as approach to combat avoidance.
+- Colossal Cave Adventure. Another direct reference to the plot.
+- Nethack, Hack, and Rogue. For dungeon and combat design.
+- Volo's guide to monsters. For specialized enemies and dungeons.
+- Dungeon Master's guide. Inspiration on storytelling and overworld design.
+- The Game Master's Book of Traps, Puzzles, and Dungeons. Dungeon and puzzle reference. 

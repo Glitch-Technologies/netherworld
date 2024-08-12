@@ -1,0 +1,14 @@
+The Netherworld
+- Gameplay centers around characters delving into a deep, underworld-esque pit located on the center of an island. 
+It's riddled with traps and puzzles, as well as enemies.
+- The game starts as a simple text-driven adventure, and expands in it's interactive mediums as the players 
+continue to explore. It will implement graphical components from games built between the 1980s and 2000s.
+- The player has little control over their characters starting attributes, as they were more or less dropped into this 
+lifestyle of adventuring out of necessity.
+- Various towns and port cities scatter the island, as it is a key trading point in the larger economy. The deadly pit 
+is widely regarded to be a tourist destination, with regular guides offering for-hire excursions.
+- Much of the game is centered around it's story. The players will discover the origin of the pit and fate of their
+late parents as they continue to progress through the game.
+- The players may interact with a variety of NPCs on the island, and will learn about the world away from it, but will not 
+be given the option to leave until they complete the main story.
+- For the majority of the game, enemies are to be avoided, under the idea that the player-character is too weak to fight them.
