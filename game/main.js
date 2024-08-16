@@ -51,5 +51,7 @@ function loadTiles() {
         });
 }
 
+function gridControl(elements) {}
+
 //Begin execution
 main();
