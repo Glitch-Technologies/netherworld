@@ -21,16 +21,19 @@ function resizeCanvas() {
     let w = window.innerWidth;
     let h = window.innerHeight;
     let scalefactor = 1;
-    let idealWidth = 320;
-    let idealHeight = 240;
+    let idealWidth = 640;
+    let idealHeight = 480;
     if (w > h) {
         scalefactor = (h*idealWidth) / (w*idealHeight);
     } else {
         scalefactor = (w*idealWidth) / (h*idealHeight);
     }
-    scalefactor = scalefactor * 100;
+    scalefactor = scalefactor * 99; //Fudge factor to remove scrollbars, trust me on this one.
     canvas.style.width = scalefactor.toString() + "%";
     canvas.style.height = scalefactor.toString() + "%";
+    // Center the canvas to the window
+    let marginRight = (w - (w * scalefactor / 100)) / 2;
+    canvas.style.margin = `0px ${marginRight}px`;
 }
 
 //Begin execution
