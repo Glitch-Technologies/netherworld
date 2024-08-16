@@ -7,15 +7,31 @@ ctx.canvas.height = 240;
 
 
 function main() {
-
+    resizeCanvas();
 }
 // Add event listener for window resize
 window.addEventListener('resize', function() {
     // Update canvas size
-    ctx.canvas.width = window.innerWidth;
-    ctx.canvas.height = window.innerHeight;
-    // Call main function to redraw the canvas
-    main();
+    resizeCanvas();
 });
+
+function resizeCanvas() {
+    const sheet = document.styleSheets[0];
+    const canvas = sheet.cssRules[0];
+    let w = window.innerWidth;
+    let h = window.innerHeight;
+    let scalefactor = 1;
+    let idealWidth = 320;
+    let idealHeight = 240;
+    if (w > h) {
+        scalefactor = (h*idealWidth) / (w*idealHeight);
+    } else {
+        scalefactor = (w*idealWidth) / (h*idealHeight);
+    }
+    scalefactor = scalefactor * 100;
+    canvas.style.width = scalefactor.toString() + "%";
+    canvas.style.height = scalefactor.toString() + "%";
+}
+
 //Begin execution
 main();
