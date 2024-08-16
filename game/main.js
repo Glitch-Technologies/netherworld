@@ -51,7 +51,13 @@ function loadTiles() {
         });
 }
 
-function gridControl(elements) {}
+/* settings[{
+*  "pos": <left-right-middle-bottom>,
+*  "show": <true-false>,
+*  "width": <number>,
+*  "height": <number>
+*  }]
+*/
 
 //Begin execution
 main();
