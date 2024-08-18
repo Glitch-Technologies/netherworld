@@ -36,7 +36,7 @@ function resizeCanvas() {
     canvas.style.margin = `0px ${marginRight}px`;
     screen.orientation.lock("landscape-primary")
     .catch((error) => {
-        alert("Non-mobile device detected.");
+        alert(`Error: ${error.message}`);
     });
     console.log(`Windows is ${h} x ${w}`);
 }
