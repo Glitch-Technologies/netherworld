@@ -1,17 +1,20 @@
 var viewFullScreen = document.getElementById("play-button");
 if (viewFullScreen) {
-  viewFullScreen.addEventListener("click", function() {
-    var docElm = document.documentElement;
-    if (docElm.requestFullscreen) {
-      docElm.requestFullscreen();
-    } else if (docElm.msRequestFullscreen) {
-      docElm.msRequestFullscreen();
-    } else if (docElm.mozRequestFullScreen) {
-      docElm.mozRequestFullScreen();
-    } else if (docElm.webkitRequestFullScreen) {
-      docElm.webkitRequestFullScreen();
-    }
-  })
+    viewFullScreen.addEventListener("click", function() {
+        var docElm = document.documentElement;
+        docElm.addEventListener("fullscreenchange", fullscreenchanged);
+        if (docElm.requestFullscreen) {
+            docElm.requestFullscreen();
+        } else if (docElm.msRequestFullscreen) {
+            docElm.msRequestFullscreen();
+        } else if (docElm.mozRequestFullScreen) {
+            docElm.mozRequestFullScreen();
+        } else if (docElm.webkitRequestFullScreen) {
+            docElm.webkitRequestFullScreen();
+        }
+        viewFullScreen.classList.add("hidden");
+        main();
+    })
 }
 
 const canvasContainer = document.getElementById('canvas-container');
@@ -51,23 +54,17 @@ function resizeCanvas() {
     let marginRight = (w / 2) - ((w * scalefactor / 100) / 2);
     canvas.style.margin = `0px ${marginRight}px`;
 
-    //toggleFullscreen();
+    //console.log(`${Document.fullscreenElement}`);
 
-    console.log(`Windows is ${h} x ${w}`);
-}
+    //orientationLock();
 
-function toggleFullscreen() {
-    let elem = document.documentElement;
-  
-    if (!document.fullscreenElement) {
-      elem.requestFullscreen().catch((err) => {
-        alert(
-          `Error attempting to enable fullscreen mode: ${err.message} (${err.name})`,
-        );
-      });
-    } else {
-      document.exitFullscreen();
-    }
+    //console.log(`Windows is ${h} x ${w}`);
+}  
+
+function fullscreenchanged() {
+    console.log(`Fullscreen changed`);
+    console.log(`${Document.fullscreenElement}`);
+    orientationLock();
 }
 
 function orientationLock() {
@@ -75,13 +72,5 @@ function orientationLock() {
     .catch((error) => {
         alert(`Error: ${error.message}`);
     });
-}
-
-async function hidePlayButton() {
-    var playButton = document.getElementById("play-button");
-    playButton.classList.add("hidden");
-
-    //Begin execution
-    main();
 }
 
