@@ -1,3 +1,19 @@
+var viewFullScreen = document.getElementById("play-button");
+if (viewFullScreen) {
+  viewFullScreen.addEventListener("click", function() {
+    var docElm = document.documentElement;
+    if (docElm.requestFullscreen) {
+      docElm.requestFullscreen();
+    } else if (docElm.msRequestFullscreen) {
+      docElm.msRequestFullscreen();
+    } else if (docElm.mozRequestFullScreen) {
+      docElm.mozRequestFullScreen();
+    } else if (docElm.webkitRequestFullScreen) {
+      docElm.webkitRequestFullScreen();
+    }
+  })
+}
+
 const canvasContainer = document.getElementById('canvas-container');
 const canvas = document.createElement('canvas');
 canvasContainer.appendChild(canvas);
@@ -35,28 +51,37 @@ function resizeCanvas() {
     let marginRight = (w / 2) - ((w * scalefactor / 100) / 2);
     canvas.style.margin = `0px ${marginRight}px`;
 
-    let elem = document.documentElement;
-    elem
-    .requestFullscreen({ navigationUI: "show" })
-    .then(() => {
-        console.log("Switched to fullscreen mode");
-        screen.orientation.lock("landscape-primary")
-        .catch((error) => {
-            alert(`Error: ${error.message}`);
-        });
-    })
-    .catch((err) => {
-        alert(
-        `An error occurred while trying to switch into fullscreen mode: ${err.message} (${err.name})`,
-        );
-    });
-    
+    //toggleFullscreen();
+
     console.log(`Windows is ${h} x ${w}`);
 }
 
-function hidePlayButton() {
+function toggleFullscreen() {
+    let elem = document.documentElement;
+  
+    if (!document.fullscreenElement) {
+      elem.requestFullscreen().catch((err) => {
+        alert(
+          `Error attempting to enable fullscreen mode: ${err.message} (${err.name})`,
+        );
+      });
+    } else {
+      document.exitFullscreen();
+    }
+}
+
+function orientationLock() {
+    screen.orientation.lock("landscape-primary")
+    .catch((error) => {
+        alert(`Error: ${error.message}`);
+    });
+}
+
+async function hidePlayButton() {
     var playButton = document.getElementById("play-button");
     playButton.classList.add("hidden");
+
     //Begin execution
     main();
 }
+
