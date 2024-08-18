@@ -29,6 +29,7 @@ function main() {
     resizeCanvas();
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    sampleDisplay();
 }
 // Add event listener for window resize
 window.addEventListener('resize', function() {
@@ -67,6 +68,21 @@ function fullscreenchanged() {
     console.log(`Fullscreen changed`);
     console.log(`${Document.fullscreenElement}`);
     orientationLock();
+}
+
+function sampleDisplay() {
+    const colors = ["red", "green", "blue", "yellow", "orange", "purple"];
+    const tileSize = 16;
+    const numTilesX = Math.floor(canvas.width / tileSize);
+    const numTilesY = Math.floor(canvas.height / tileSize);
+
+    for (let y = 0; y < numTilesY; y++) {
+        for (let x = 0; x < numTilesX; x++) {
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            ctx.fillStyle = color;
+            ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+        }
+    }
 }
 
 function orientationLock() {
