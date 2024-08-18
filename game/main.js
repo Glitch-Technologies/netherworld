@@ -32,8 +32,13 @@ function resizeCanvas() {
     canvas.style.width = scalefactor.toString() + "%";
     canvas.style.height = scalefactor.toString() + "%";
     // Center the canvas to the window
-    let marginRight = (w - (w * scalefactor / 100)) / 2;
+    let marginRight = (w / 2) - ((w * scalefactor / 100) / 2);
     canvas.style.margin = `0px ${marginRight}px`;
+    screen.orientation.lock("landscape-primary")
+    .catch((error) => {
+        console.log("Non-mobile device detected.");
+    });
+    console.log(`Windows is ${h} x ${w}`);
 }
 
 //Begin execution
