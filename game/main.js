@@ -27,6 +27,8 @@ ctx.canvas.height = 240;
 
 function main() {
     resizeCanvas();
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 // Add event listener for window resize
 window.addEventListener('resize', function() {
@@ -70,7 +72,7 @@ function fullscreenchanged() {
 function orientationLock() {
     screen.orientation.lock("landscape-primary")
     .catch((error) => {
-        alert(`Error: ${error.message}`);
+        console.log(`Error: ${error.message}`);
     });
 }
 
