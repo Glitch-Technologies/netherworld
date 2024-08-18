@@ -34,12 +34,29 @@ function resizeCanvas() {
     // Center the canvas to the window
     let marginRight = (w / 2) - ((w * scalefactor / 100) / 2);
     canvas.style.margin = `0px ${marginRight}px`;
-    screen.orientation.lock("landscape-primary")
-    .catch((error) => {
-        alert(`Error: ${error.message}`);
+
+    let elem = document.documentElement;
+    elem
+    .requestFullscreen({ navigationUI: "show" })
+    .then(() => {
+        console.log("Switched to fullscreen mode");
+        screen.orientation.lock("landscape-primary")
+        .catch((error) => {
+            alert(`Error: ${error.message}`);
+        });
+    })
+    .catch((err) => {
+        alert(
+        `An error occurred while trying to switch into fullscreen mode: ${err.message} (${err.name})`,
+        );
     });
+    
     console.log(`Windows is ${h} x ${w}`);
 }
 
-//Begin execution
-main();
+function hidePlayButton() {
+    var playButton = document.getElementById("play-button");
+    playButton.classList.add("hidden");
+    //Begin execution
+    main();
+}
