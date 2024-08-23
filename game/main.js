@@ -1,6 +1,8 @@
 var viewFullScreen = document.getElementById("play-button");
 let ctx, canvas, canvasContainer; //Hooray for global variables
 let typingOn, typingPositionX, typingPositionY;
+let font, flag, menuPos;
+let fonts = [];
 
 if (viewFullScreen) {
     viewFullScreen.addEventListener("click", function() {
@@ -42,8 +44,6 @@ function init() {
         const pos = getMousePos(canvas, event);
         const nearestX = Math.floor(pos.x / 8) * 8;
         const nearestY = Math.floor(pos.y / 8) * 8;
-        console.log(`Nearest point: (${nearestX}, ${nearestY})`);
-        drawText("Q", nearestX, nearestY);
     });
 
     canvasContainer.appendChild(canvas);
@@ -51,29 +51,26 @@ function init() {
     ctx.canvas.width = 640;
     ctx.canvas.height = 480;
     
-    const font = new Image();
+    flag = 0;
+    menuPos = -1;
+
+    font = new Image();
     font.src = "../assets/ib8xcp437.png";
     font.onload = function() {
         assetsLoaded++;
-        if (assetsLoaded === 1) {
-            main();
-        }
+        fontLoader();
     }
 }
-
 
 function main() {
     resizeCanvas();
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.lineWidth = 8;
+    ctx.lineWidth = 6;
     ctx.strokeStyle = "white";
     ctx.strokeRect(4, 4, canvas.width-4, canvas.height-4);
-    //sampleDisplay();
-    drawText("Hello, World!", 8, 8);
-    typingOn = true;
-    typingPositionX = 8;
-    typingPositionY = 8;
+    flag = 1;
+    mainMenu();
 }
 // Add event listener for window resize
 window.addEventListener('resize', function() {
@@ -92,6 +89,31 @@ document.addEventListener("keydown", function(event) {
             if (typingPositionX >= 632) {
                 typingPositionX = 8;
                 typingPositionY += 8;
+            }
+        }
+    }
+    if (flag === 1) {
+        if  ((key === "w" || key === "s") && (menuPos != -1 && menuPos != 4)) {
+            drawText(">", 8, 8+(16*(menuPos+1)), 0);
+        }
+        if ( key === "w" && menuPos != 0) {
+            menuPos--;
+            drawText(">", 8, 8+(16*(menuPos+1)), 15);
+        } else if (key === "s" && menuPos != 3) {
+            menuPos++;
+            drawText(">", 8, 8+(16*(menuPos+1)), 15);
+        } else if (key === "Enter") {
+            if (menuPos === 0) {
+                // Start
+                drawText("An Error Occured", 280, 8, 12);
+            } else if (menuPos === 1) {
+                // Load
+            } else if (menuPos === 2) {
+                // Options
+                drawText("An Error Occured", 280, 8, 12);
+            } else if (menuPos === 3) {
+                // Exit
+                drawText("An Error Occured", 280, 8, 12);
             }
         }
     }
@@ -120,41 +142,96 @@ function resizeCanvas() {
 }  
 
 function fullscreenchanged() {
-    console.log(`Fullscreen changed`);
-    console.log(`${Document.fullscreenElement}`);
+    console.log(`Entered Fullscreen`);
     resizeCanvas();
     orientationLock();
 }
 
-function sampleDisplay() {  //copilot lowkey highkey cooked ong fr
-    const colors = ["red", "green", "blue", "yellow", "orange", "purple"];
-    const tileSize = 16;
-    const numTilesX = Math.floor(canvas.width / tileSize);
-    const numTilesY = Math.floor(canvas.height / tileSize);
 
-    for (let y = 0; y < numTilesY; y++) {
-        for (let x = 0; x < numTilesX; x++) {
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            ctx.fillStyle = color;
-            ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
-        }
-    }
-}
-
-function drawText(text, x, y) {
+function drawText(text, x, y, color=0) {
     const fontWidth = 8;
     const fontHeight = 8;
     const fontMap = 
 ` ☺☻♥♦♣♠•◘○◙♂♀♪♫☼►◄↕‼¶§▬↨↑↓→←∟↔▲▼ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\`abcdefghijklmnopqrstuvwxyz{|}~`; 
     //129 more character to add, but this is good enough for demo
-    const fontImage = new Image();
-    fontImage.src = "../assets/ib8xcp437.png";
-    fontImage.onload = function() {
-        for (let i = 0; i < text.length; i++) {
-            const charIndex = fontMap.indexOf(text[i]);
-            const sx = charIndex * fontWidth;
-            const sy = 0;
-            ctx.drawImage(fontImage, sx, sy, fontWidth, fontHeight, x + (i * fontWidth), y, fontWidth, fontHeight);
+    for (let i = 0; i < text.length; i++) {
+        const charIndex = fontMap.indexOf(text[i]);
+        const sx = charIndex * fontWidth;
+        const sy = 0;
+        ctx.drawImage(fonts[color], sx, sy, fontWidth, fontHeight, x + (i * fontWidth), y, fontWidth, fontHeight);
+    }
+}
+
+function convertWhitePixelsToColor(image, color, bgcolor = { red: 0, green: 0, blue: 0 }) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = image.width;
+    canvas.height = image.height;
+    ctx.drawImage(image, 0, 0);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+        const red = data[i];
+        const green = data[i + 1];
+        const blue = data[i + 2];
+        if (red === 255 && green === 255 && blue === 255) {
+            data[i] = color.red;
+            data[i + 1] = color.green;
+            data[i + 2] = color.blue;
+        } else if (red === 0 && green === 0 && blue === 0) {
+            data[i] = bgcolor.red;
+            data[i + 1] = bgcolor.green;
+            data[i + 2] = bgcolor.blue
+        } 
+    }
+    ctx.putImageData(imageData, 0, 0);
+    const output = new Image();
+    output.src = canvas.toDataURL();
+    output.onload = function() {
+        assetsLoaded++;
+        if (assetsLoaded === 15) {
+            main(); //This is here now. I hate it.
+        }
+    }
+    return output;
+}
+
+function colorCodeConvert(colorCode) {
+    const red = parseInt(colorCode.substr(1, 2), 16);
+    const green = parseInt(colorCode.substr(3, 2), 16);
+    const blue = parseInt(colorCode.substr(5, 2), 16);
+    return { red, green, blue };
+}
+
+function fontLoader() {
+    colors = [
+        // index 0 == white
+        "#000000", // black 1
+        "#0000AA", // dark blue 2
+        "#00AA00", // dark green 3
+        "#00AAAA", // dark cyan 4
+        "#AA0000", // dark red 5
+        "#AA00AA", // dark magenta 6
+        "#AA5500", // dark yellow 7
+        "#AAAAAA", // light gray 8
+        "#555555", // dark gray 9
+        "#5555FF", // blue 10
+        "#55FF55", // green 11
+        "#55FFFF", // cyan 12
+        "#FF5555", // red 13
+        "#FF55FF", // magenta 14
+        "#FFFF55", // yellow 15
+        "#FFFFFF"  // white 16
+    ]; //Picking colors is dark magic now
+    fonts.push(font);
+    for (let i = 0; i < colors.length; i++) {
+        for (let j = 0; j < colors.length; j++) {
+            const colorCode = colors[i];
+            const color = colorCodeConvert(colorCode);
+            const bgcolorCode = colors[j];
+            const bgcolor = colorCodeConvert(bgcolorCode);
+            const convertedFont = convertWhitePixelsToColor(font, color, bgcolor);
+            fonts.push(convertedFont);
         }
     }
 }
@@ -162,15 +239,17 @@ function drawText(text, x, y) {
 function orientationLock() {
     screen.orientation.lock("landscape-primary")
     .catch((error) => {
-        console.log(`Error: ${error.message}`);
+        //console.log(`Error: ${error.message}`);
+        console.log("This device doesn't support rotation. Probably because it's a desktop.");
     });
 }
 
 function mainMenu() {
     //This is the main menu
-    drawText("Main Menu", 8, 8);
-    drawText("> Start", 8, 16);
-    drawText("> Load", 8, 24);
-    drawText("> Options", 8, 24);
-    drawText("> Exit", 8, 32);
+    drawText("Main Menu", 280, 8);
+    drawText("> Start", 8, 24);
+    drawText("Load", 24, 40, 9);
+    drawText(">", 8, 40, 0);
+    drawText("> Options", 8, 56);
+    drawText("> Exit", 8, 72);
 }
