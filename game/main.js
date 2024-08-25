@@ -48,8 +48,9 @@ function init() {
 
     canvasContainer.appendChild(canvas);
     ctx = canvas.getContext('2d');
-    ctx.canvas.width = 640;
-    ctx.canvas.height = 480;
+    ctx.canvas.width = 656;
+    ctx.canvas.height = 496;
+    //640 x 480 + 8px border on all sides
     
     flag = 0;
     menuPos = -1;
@@ -66,9 +67,11 @@ function main() {
     resizeCanvas();
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.lineWidth = 6;
-    ctx.strokeStyle = "white";
-    ctx.strokeRect(4, 4, canvas.width-4, canvas.height-4);
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, 8);
+    ctx.fillRect(0, 0, 8, canvas.height);
+    ctx.fillRect(0, canvas.height-8, canvas.width, 8);
+    ctx.fillRect(canvas.width-8, 0, 8, canvas.height);
     flag = 1;
     mainMenu();
 }
@@ -77,6 +80,11 @@ window.addEventListener('resize', function() {
     // Update canvas size
     resizeCanvas();
 });
+
+function clearScreen() {
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
 
 document.addEventListener("keydown", function(event) {
     // Handle key input here
@@ -106,6 +114,8 @@ document.addEventListener("keydown", function(event) {
             if (menuPos === 0) {
                 // Start
                 drawText("An Error Occured", 280, 8, 12);
+                clearScreen();
+                introSeq();
             } else if (menuPos === 1) {
                 // Load
             } else if (menuPos === 2) {
@@ -118,6 +128,18 @@ document.addEventListener("keydown", function(event) {
         }
     }
 });
+
+function introSeq() {
+    drawText("========================================", 160, 232, 12);
+    drawText("| Inspirational Quote goes here        |", 160, 240, 12);
+    drawText("|                    - greenturtle537  |", 160, 248, 12);
+    drawText("========================================", 160, 256, 12);
+    setTimeout(function() {
+        clearScreen();
+        flag++;
+        drawText("Loading...", 296, 16);
+    }, 3000);
+}
 
 function resizeCanvas() {
     const sheet = document.styleSheets[0];
@@ -132,7 +154,7 @@ function resizeCanvas() {
     } else {
         scalefactor = (w*idealWidth) / (h*idealHeight);
     }
-    scalefactor = scalefactor * 99; //Fudge factor to remove scrollbars, trust me on this one.
+    scalefactor = scalefactor * 98; //Fudge factor to remove scrollbars, trust me on this one.
     canvas.style.width = scalefactor.toString() + "%";
     canvas.style.height = scalefactor.toString() + "%";
     // Center the canvas to the window
@@ -233,8 +255,8 @@ function fontLoader() {
         "#FFFFFF"  // white 16
     ]; //Picking colors is dark magic now
     fonts.push(font);
-    for (let i = 0; i < colors.length; i++) {
-        for (let j = 0; j < colors.length; j++) {
+    for (let j = 0; j < colors.length; j++) {
+        for (let i = 0; i < colors.length; i++) {
             const colorCode = colors[i];
             const color = colorCodeConvert(colorCode);
             const bgcolorCode = colors[j];
@@ -255,7 +277,7 @@ function orientationLock() {
 
 function mainMenu() {
     //This is the main menu
-    drawText("Main Menu", 280, 8);
+    drawText("Main Menu", 296, 16);
     drawText("> Start", 8, 24);
     drawText("Load", 24, 40, 9);
     drawText(">", 8, 40, 0);
