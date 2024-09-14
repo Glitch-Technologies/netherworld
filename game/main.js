@@ -119,6 +119,7 @@ document.addEventListener("keydown", function(event) {
             if (menuPos === 0) {
                 // Start
                 drawText("An Error Occured", 272, 0, 12);
+                flag++;
                 clearScreen();
                 introSeq();
             } else if (menuPos === 1) {
@@ -165,14 +166,14 @@ document.addEventListener("keydown", function(event) {
 //A game is only a moment in time, but a true adventure lingers in the heart—what separates the two is not the path you walk, but how deeply you choose to travel.
 
 function introSeq() {
-    drawText("========================================", 160, 232);
-    drawText("| A game is a moment, but an adventure |", 160, 240);
-    drawText("| lingers. What matters is not the way |", 160, 248);
-    drawText("| you walk, but the friends you made   |", 160, 256);
-    drawText("| along the way.      - Greenturtle537 |", 160, 264);
-    drawText("========================================", 160, 272);
-    drawText("Press any key to continue...", 296, 16, 30);
-``
+    drawText("========================================", 320, 232, 0, true);
+    drawText("| A game is a moment, but an adventure |", 320, 240, 0, true);
+    drawText("| lingers. What matters is not the way |", 320, 248, 0, true);
+    drawText("| you walk, but the friends you made   |", 320, 256, 0, true);
+    drawText("| along the way.      - Greenturtle537 |", 320, 264, 0, true);
+    drawText("========================================", 320, 272, 0, true);
+    drawText("Press any key to continue...", 320, 8, 30, true);
+
     document.addEventListener("keydown", function(event) {
         // Handle key input here
         const key = event.key;
@@ -185,7 +186,6 @@ function introSeq() {
                 typingPositionX = 0;
                 typingPositionY = 472;
                 overflowNotPermitted = true;
-                flag++;
             }, 10); // Add a delay here for dramatic effect
         }
     });
@@ -220,7 +220,7 @@ function fullscreenchanged() {
 }
 
 
-function drawText(text, x, y, color=0) {
+function drawText(text, x, y, color=0, center=false) {
     const fontWidth = 8;
     const fontHeight = 8;
     const fontMap = 
@@ -239,7 +239,13 @@ function drawText(text, x, y, color=0) {
         const charIndex = fontCodeMap.indexOf(text.charCodeAt(i));
         const sx = charIndex * fontWidth;
         const sy = 0;
-        blitctx.drawImage(fonts[color], sx, sy, fontWidth, fontHeight, x + (i * fontWidth), y, fontWidth, fontHeight);
+        let xPos = x + (i * fontWidth);
+        if (center) {
+            const textWidth = text.length * fontWidth;
+            const canvasWidth = canvas.width;
+            xPos = (canvasWidth - textWidth) / 2 + (i * fontWidth);
+        }
+        blitctx.drawImage(fonts[color], sx, sy, fontWidth, fontHeight, xPos, y, fontWidth, fontHeight);
     }
     blitBuffer();
 }
