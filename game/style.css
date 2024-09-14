@@ -33,3 +33,11 @@ button {
 img {
     display: none;
 }
+
+#white-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: white;
+    z-index: 9999;
+}

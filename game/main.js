@@ -41,6 +41,10 @@ function init() {
     canvasContainer = document.getElementById('canvas-container');
     canvas = document.createElement('canvas');
 
+    blitCanvasContainer = document.getElementById('blit-canvas-container');
+    blitCanvas = document.createElement('canvas');
+    blitCanvas.style.display = "none";
+
     canvas.addEventListener("mousedown", function(event) {
         const pos = getMousePos(canvas, event);
         const nearestX = Math.floor(pos.x / 8) * 8;
@@ -52,6 +56,11 @@ function init() {
     ctx.canvas.width = 656;
     ctx.canvas.height = 496;
     //640 x 480 + 8px border on all sides
+
+    blitCanvasContainer.appendChild(blitCanvas);
+    blitctx = blitCanvas.getContext('2d');
+    blitctx.canvas.width = 640;
+    blitctx.canvas.height = 480;
     
     flag = 0;
     menuPos = -1;
@@ -62,6 +71,12 @@ function init() {
         assetsLoaded++;
         fontLoader();
     }
+}
+
+function blitBuffer() {
+    console.time("blitBuffer");
+    ctx.drawImage(blitCanvas, 8, 8);
+    console.timeEnd("blitBuffer");
 }
 
 function main() {
@@ -78,7 +93,8 @@ window.addEventListener('resize', function() {
 
 function clearScreen() {
     ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    blitctx.fillRect(0, 0, blitCanvas.width, blitCanvas.height);
+    blitBuffer();
     ctx.fillStyle = "gray";
     ctx.fillRect(0, 0, canvas.width, 8);
     ctx.fillRect(0, 0, 8, canvas.height);
@@ -91,43 +107,43 @@ document.addEventListener("keydown", function(event) {
     const key = event.key;
     if (flag === 1) {
         if  ((key === "w" || key === "s") && (menuPos != -1 && menuPos != 4)) {
-            drawText(">", 8, 8+(16*(menuPos+1)), 0);
+            drawText(">", 0, 0+(16*(menuPos+1)), 0);
         }
         if ( key === "w" && menuPos != 0) {
             menuPos--;
-            drawText(">", 8, 8+(16*(menuPos+1)), 15);
+            drawText(">", 0, 0+(16*(menuPos+1)), 15);
         } else if (key === "s" && menuPos != 3) {
             menuPos++;
-            drawText(">", 8, 8+(16*(menuPos+1)), 15);
+            drawText(">", 0, 0+(16*(menuPos+1)), 15);
         } else if (key === "Enter") {
             if (menuPos === 0) {
                 // Start
-                drawText("An Error Occured", 280, 8, 12);
+                drawText("An Error Occured", 272, 0, 12);
                 clearScreen();
                 introSeq();
             } else if (menuPos === 1) {
                 // Load
             } else if (menuPos === 2) {
                 // Options
-                drawText("An Error Occured", 280, 8, 12);
+                drawText("An Error Occured", 272, 0, 12);
             } else if (menuPos === 3) {
                 // Exit
-                drawText("An Error Occured", 280, 8, 12);
+                drawText("An Error Occured", 272, 0, 12);
             }
         }
     } else if (flag === 2) {
         if (typingOn && overflowNotPermitted) {
-            if (key.length === 1 && typingPositionX < 648) {
+            if (key.length === 1 && typingPositionX < 640) {
                 drawText(key, typingPositionX, typingPositionY);
                 typingPositionX += 8;
                 command += key;
-            } else if (key === "Backspace" && typingPositionX > 8) {
+            } else if (key === "Backspace" && typingPositionX > 0) {
                 typingPositionX -= 8;
                 drawText(" ", typingPositionX, typingPositionY);
                 command = command.slice(0, -1);
             } else if (key === "Enter") {
-                drawText("                                                                                ", 8, typingPositionY);
-                typingPositionX = 8;
+                drawText("                                                                                ", 0, typingPositionY);
+                typingPositionX = 0;
                 //evalCommand(command);
             }
         } else if (typingOn && !overflowNotPermitted) {
@@ -137,7 +153,7 @@ document.addEventListener("keydown", function(event) {
                 drawText(key, typingPositionX, typingPositionY);
                 typingPositionX += 8;
                 if (typingPositionX >= 632) {
-                    typingPositionX = 8;
+                    typingPositionX = 0;
                     typingPositionY += 8;
                 }
                 }
@@ -163,11 +179,11 @@ function introSeq() {
         if (key === "Enter") {
             setTimeout(function() {
                 clearScreen();
-                drawText("Darkness. . .", 8, 8);
-                drawText("--------------------------------------------------------------------------------", 8, 472);
+                drawText("Darkness. . .", 0, 0);
+                drawText("--------------------------------------------------------------------------------", 0, 464);
                 typingOn = true;
-                typingPositionX = 8;
-                typingPositionY = 480;
+                typingPositionX = 0;
+                typingPositionY = 472;
                 overflowNotPermitted = true;
                 flag++;
             }, 10); // Add a delay here for dramatic effect
@@ -223,17 +239,19 @@ function drawText(text, x, y, color=0) {
         const charIndex = fontCodeMap.indexOf(text.charCodeAt(i));
         const sx = charIndex * fontWidth;
         const sy = 0;
-        ctx.drawImage(fonts[color], sx, sy, fontWidth, fontHeight, x + (i * fontWidth), y, fontWidth, fontHeight);
+        blitctx.drawImage(fonts[color], sx, sy, fontWidth, fontHeight, x + (i * fontWidth), y, fontWidth, fontHeight);
     }
+    blitBuffer();
 }
 
 function convertWhitePixelsToColor(image, color, bgcolor = { red: 0, green: 0, blue: 0 }) {
     const canvas = document.createElement('canvas');
+    canvas.style.display = "none";
     const ctx = canvas.getContext('2d');
     canvas.width = image.width;
     canvas.height = image.height;
     ctx.drawImage(image, 0, 0);
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const imageData = ctx.getImageData(0, 0, image.width, image.height);
     const data = imageData.data;
     for (let i = 0; i < data.length; i += 4) {
         const red = data[i];
@@ -311,12 +329,12 @@ function orientationLock() {
 
 function mainMenu() {
     //This is the main menu
-    drawText("Main Menu", 296, 16);
-    drawText("> Start", 8, 24);
-    drawText("Load", 24, 40, 9);
-    drawText(">", 8, 40, 0);
-    drawText("> Options", 8, 56);
-    drawText("> Exit", 8, 72);
+    drawText("Main Menu", 288, 8);
+    drawText("> Start", 0, 16);
+    drawText("Load", 16, 32, 9);
+    drawText(">", 0, 32, 0);
+    drawText("> Options", 0, 48);
+    drawText("> Exit", 0, 64);
 }
 
 function commandEval() {
