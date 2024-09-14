@@ -1,8 +1,9 @@
 var viewFullScreen = document.getElementById("play-button");
 let ctx, canvas, canvasContainer; //Hooray for global variables
-let typingOn, typingPositionX, typingPositionY;
+let typingOn, typingPositionX, typingPositionY, overflowNotPermitted;
 let font, flag, menuPos;
 let fonts = [];
+let command = "";
 
 if (viewFullScreen) {
     viewFullScreen.addEventListener("click", function() {
@@ -65,13 +66,7 @@ function init() {
 
 function main() {
     resizeCanvas();
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvas.width, 8);
-    ctx.fillRect(0, 0, 8, canvas.height);
-    ctx.fillRect(0, canvas.height-8, canvas.width, 8);
-    ctx.fillRect(canvas.width-8, 0, 8, canvas.height);
+    clearScreen();
     flag = 1;
     mainMenu();
 }
@@ -84,22 +79,16 @@ window.addEventListener('resize', function() {
 function clearScreen() {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "gray";
+    ctx.fillRect(0, 0, canvas.width, 8);
+    ctx.fillRect(0, 0, 8, canvas.height);
+    ctx.fillRect(0, canvas.height-8, canvas.width, 8);
+    ctx.fillRect(canvas.width-8, 0, 8, canvas.height);
 }
 
 document.addEventListener("keydown", function(event) {
     // Handle key input here
     const key = event.key;
-    if (key.length === 1) {
-        // Handle single character input here
-        if (typingOn) {
-            drawText(key, typingPositionX, typingPositionY);
-            typingPositionX += 8;
-            if (typingPositionX >= 632) {
-                typingPositionX = 8;
-                typingPositionY += 8;
-            }
-        }
-    }
     if (flag === 1) {
         if  ((key === "w" || key === "s") && (menuPos != -1 && menuPos != 4)) {
             drawText(">", 8, 8+(16*(menuPos+1)), 0);
@@ -126,19 +115,64 @@ document.addEventListener("keydown", function(event) {
                 drawText("An Error Occured", 280, 8, 12);
             }
         }
+    } else if (flag === 2) {
+        if (typingOn && overflowNotPermitted) {
+            if (key.length === 1 && typingPositionX < 648) {
+                drawText(key, typingPositionX, typingPositionY);
+                typingPositionX += 8;
+                command += key;
+            } else if (key === "Backspace" && typingPositionX > 8) {
+                typingPositionX -= 8;
+                drawText(" ", typingPositionX, typingPositionY);
+                command = command.slice(0, -1);
+            } else if (key === "Enter") {
+                drawText("                                                                                ", 8, typingPositionY);
+                typingPositionX = 8;
+                //evalCommand(command);
+            }
+        } else if (typingOn && !overflowNotPermitted) {
+            if (key.length === 1) {
+                // Handle single character input here
+                if (typingOn) {
+                drawText(key, typingPositionX, typingPositionY);
+                typingPositionX += 8;
+                if (typingPositionX >= 632) {
+                    typingPositionX = 8;
+                    typingPositionY += 8;
+                }
+                }
+            }
+        }
     }
 });
 
+//A game is only a moment in time, but a true adventure lingers in the heart—what separates the two is not the path you walk, but how deeply you choose to travel.
+
 function introSeq() {
-    drawText("========================================", 160, 232, 12);
-    drawText("| Inspirational Quote goes here        |", 160, 240, 12);
-    drawText("|                    - greenturtle537  |", 160, 248, 12);
-    drawText("========================================", 160, 256, 12);
-    setTimeout(function() {
-        clearScreen();
-        flag++;
-        drawText("Loading...", 296, 16);
-    }, 3000);
+    drawText("========================================", 160, 232);
+    drawText("| A game is a moment, but an adventure |", 160, 240);
+    drawText("| lingers. What matters is not the way |", 160, 248);
+    drawText("| you walk, but the friends you made   |", 160, 256);
+    drawText("| along the way.      - Greenturtle537 |", 160, 264);
+    drawText("========================================", 160, 272);
+    drawText("Press any key to continue...", 296, 16, 30);
+``
+    document.addEventListener("keydown", function(event) {
+        // Handle key input here
+        const key = event.key;
+        if (key === "Enter") {
+            setTimeout(function() {
+                clearScreen();
+                drawText("Darkness. . .", 8, 8);
+                drawText("--------------------------------------------------------------------------------", 8, 472);
+                typingOn = true;
+                typingPositionX = 8;
+                typingPositionY = 480;
+                overflowNotPermitted = true;
+                flag++;
+            }, 10); // Add a delay here for dramatic effect
+        }
+    });
 }
 
 function resizeCanvas() {
@@ -283,4 +317,8 @@ function mainMenu() {
     drawText(">", 8, 40, 0);
     drawText("> Options", 8, 56);
     drawText("> Exit", 8, 72);
+}
+
+function commandEval() {
+    //Idk
 }
