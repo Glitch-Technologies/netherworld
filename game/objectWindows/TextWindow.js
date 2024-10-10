@@ -24,13 +24,34 @@ class TextWindow extends GraphicWindow {
         "#FFFFFF"  // white 16
     ]; //Picking colors is dark magic now
 
-    constructor(width, height, x, y, rows, cols, editable) {
+    constructor(width, height, x, y, rows, cols, editable = false, keyRules = () => {}, text = "") {
         super(width, height, x, y);
 
         this.rows = rows;
         this.cols = cols;
         this.editable = editable;
+        this.text = this.rowSeperate(text);
+        if (text !== "") {
+            this.drawText(this.text, x, y);
+        }
+        if (editable[0] === true) {
+            this.typingOn = true;
+        }
+        if (keyRules && typeof keyRules === 'function') {
+            console.log(keyRules);
+            this.initKeyControl(keyRules);
+        }
+
         //TextWindow.fonts = fonts;
+    }
+
+    initKeyControl(keyRules) {
+        keyRules(this);
+    }
+    
+    rowSeperate(text) {
+        const rows = text.split("\n");
+        return rows;
     }
 
     drawText(text, x, y, color=0, center=false) {

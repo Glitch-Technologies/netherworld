@@ -16,8 +16,8 @@ class CanvasWindow {
         CanvasWindow.width = width;
         CanvasWindow.height = height;
         
-        CanvasWindow.canvas.width = width;
-        CanvasWindow.canvas.height = height;
+        CanvasWindow.canvas.width = width+16;
+        CanvasWindow.canvas.height = height+16;
         document.body.appendChild(CanvasWindow.canvas);
 
         CanvasWindow.blitctx.canvas.width = width;

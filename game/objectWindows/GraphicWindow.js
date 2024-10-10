@@ -15,7 +15,7 @@ class GraphicWindow {
     }
 
     clearScreen() {
-        this.ctx.fillStyle("white");
+        this.ctx.fillStyle("black");
         this.ctx.fillRect(this, 0, 0, this.width, this.height);
         this.ctx.blitBuffer();
     }
