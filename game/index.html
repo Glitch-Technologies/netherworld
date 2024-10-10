@@ -5,45 +5,18 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="../assets/netherworld_logo.ico">
 </head>
-<body>
-    <div class="container">
-        <div class="left">
-            <pre style="margin: 30px;" id="statbar">
-            </pre>
-            <p style="text-align: center;"><- 1 -></p>
-        </div>
-        <div class="right">
-            <table border="1" width="90%" height="80%" style="margin: 10px; margin-left: auto; margin-right: auto;">
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </table>
-            <div class="controls">
-                <p style="text-align: center;"><- 1 -></p>
-            </div>
-        </div>
-        <div class="bottom">
-            <div class="text-section">
-                <p>Welcome to the Netherworld! Are you ready to explore?</p>
-                <button class="continue-button">Continue</button>
-            </div>
-        </div>
-        <div class="middle" id="canvas-container">
-        </div>
-    </div>
-    <script src="main.js"></script>
+<body topmargin="0" leftmargin="0">
+    <div id="blit-canvas-container"></div>
+    <div id="canvas-container"></div>
+    <button id="play-button">Play</button>
+    <div id="white-text">support@glitchtech.top</div>
 </body>
+<script src="main.js" type="module"></script>
+<script src="objectWindows/window.js" type="module"></script>
+<script src="objectWindows/CanvasWindow.js" type="module"></script>
+<script src="objectWindows/TextWindow.js" type="module"></script>
+<script src="objectWindows/GraphicWindow.js" type="module"></script>
+
+<script src="keyBehaviour/keyBehaviour.js" type="module"></script>
+
 </html>

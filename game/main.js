@@ -1,55 +1,91 @@
-const canvasContainer = document.getElementById('canvas-container');
-const canvas = document.createElement('canvas');
-canvasContainer.appendChild(canvas);
-const ctx = canvas.getContext('2d');
+import {CanvasWindow, TextWindow} from './objectWindows/window.js';
+import { KeyBehaviour } from './keyBehaviour/keyBehaviour.js';
 
-function loadStats() {
-    const statBar = document.getElementById('statbar');
-    statBar.innerText = `
-Name: Player
-Class: Warrior
-Hit Points 10/20
-Mana Points 15/20
-Gold 100
-Experience 0/100
-Stats:
-Strength 10
-Defense 5
-Agility 5
-Intelligence 5
-Charisma 5
-Wisdom 5
-Constitution 5
-Perception 5
-Luck 5
-Status: Alive`;
+
+window.assetsLoaded = 0;
+
+var viewFullScreen = document.getElementById("play-button");
+let typingOn, typingPositionX, typingPositionY, overflowNotPermitted;
+let font, flag, menuPos;
+let command = "";
+
+let canvasWindow = new CanvasWindow(640, 480); //Basically not important unless we need to hack direct reference ¯\_(ツ)_/¯
+let textWindow;
+
+//To use fullscreen setup, just add a button and attach it likewise
+if (viewFullScreen) {
+    viewFullScreen.addEventListener("click", function() {
+        CanvasWindow.fullscreenSetup(viewFullScreen);
+        init();
+    })
 }
+
+async function init() {
+    //This is control for variable setup and asset loading
+    flag = 0;
+    menuPos = -1;
+
+    font = new Image();
+    font.src = "../assets/ib8xcp437.png";
+    font.onload = async function() {
+        console.log(font);
+        TextWindow.fontLoader(font);
+        assetsLoaded++;
+        while (assetsLoaded < 15) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+
+        main();
+    }
+}
+
 
 function main() {
-    loadStats();
-    loadTiles();
+    CanvasWindow.resizeCanvas();
+    flag = 1;
+    console.log();
+    textWindow = new TextWindow(640, 480, 0, 0, 0, 0, false, KeyBehaviour.getBehaviour("menu"));
+    mainMenu();
 }
 
-function loadTiles() {
-    fetch('tileref.json')
-        .then(response => response.json())
-        .then(data => {
-            Object.entries(data["tilekeys"]).forEach(([key, value]) => {
-                // Do something with each key-value pair
-                console.log(key, value);
-                const image = new Image();
-                image.src = value;
-                image.onload = () => {
-                    // Do something with the loaded image
-                    console.log('Image loaded:', image);
-                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height); // Draw the image on the canvas, scaling it to the full size of the canvas
-                };
-            })}
-        )
-        .catch(error => {
-            alert('Error loading dictionary: ' + error);
-        });
+//A game is only a moment in time, but a true adventure lingers in the heart—what separates the two is not the path you walk, but how deeply you choose to travel.
+
+function introSeq() {
+    textWindow.drawText("========================================", 320, 232, 0, true);
+    textWindow.drawText("| A game is a moment, but an adventure |", 320, 240, 0, true);
+    textWindow.drawText("| lingers. What matters is not the way |", 320, 248, 0, true);
+    textWindow.drawText("| you walk, but the friends you made   |", 320, 256, 0, true);
+    textWindow.drawText("| along the way.      - Greenturtle537 |", 320, 264, 0, true);
+    textWindow.drawText("========================================", 320, 272, 0, true);
+    textWindow.drawText("Press any key to continue...", 320, 8, 30, true);
+
+    document.addEventListener("keydown", function(event) {
+        // Handle key input here
+        const key = event.key;
+        if (key === "Enter") {
+            setTimeout(function() {
+                textWindow.clearScreen();
+                textWindow.drawText("Darkness. . .", 0, 0);
+                textWindow.drawText("--------------------------------------------------------------------------------", 0, 464);
+                typingOn = true;
+                typingPositionX = 0;
+                typingPositionY = 472;
+                overflowNotPermitted = true;
+            }, 10); // Add a delay here for dramatic effect
+        }
+    });
 }
 
-//Begin execution
-main();
+function mainMenu() {
+    //This is the main menu
+    textWindow.drawText("Main Menu", 288, 8);
+    textWindow.drawText("> Start", 0, 16);
+    textWindow.drawText("Load", 16, 32, 9);
+    textWindow.drawText(">", 0, 32, 0);
+    textWindow.drawText("> Options", 0, 48);
+    textWindow.drawText("> Exit", 0, 64);
+}
+
+function commandEval() {
+    //Idk
+}
