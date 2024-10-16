@@ -1,11 +1,10 @@
 import {CanvasWindow, TextWindow, KeyBehaviour} from './GlitchEngineJS/GlitchEngine.js';
 
-window.assetsLoaded = 0;
-
 var viewFullScreen = document.getElementById("play-button");
-let typingOn, typingPositionX, typingPositionY, overflowNotPermitted;
-let font, flag, menuPos;
-let command = "";
+const spinner = document.getElementById('black-box');
+//let typingOn, typingPositionX, typingPositionY, overflowNotPermitted;
+let flag, menuPos;
+//let command = "";
 
 let canvasWindow = new CanvasWindow(640, 480); //Basically not important unless we need to hack direct reference ¯\_(ツ)_/¯
 let textWindow;
@@ -13,8 +12,8 @@ let textWindow;
 //To use fullscreen setup, just add a button and attach it likewise
 if (viewFullScreen) {
     viewFullScreen.addEventListener("click", function() {
-        CanvasWindow.fullscreenSetup(viewFullScreen);
         init();
+        CanvasWindow.fullscreenSetup(viewFullScreen);
     })
 }
 
@@ -22,23 +21,14 @@ async function init() {
     //This is control for variable setup and asset loading
     flag = 0;
     menuPos = -1;
-
-    font = new Image();
-    font.src = "../assets/ib8xcp437.png";
-    font.onload = async function() {
-        console.log(font);
-        TextWindow.fontLoader(font);
-        assetsLoaded++;
-        while (assetsLoaded < 15) {
-            await new Promise(resolve => setTimeout(resolve, 100));
-        }
-
-        main();
-    }
+    spinner.style.display = 'flex';
+    TextWindow.initFont().onload=async function(){TextWindow.fontLoader(this);main();} //Super readable, right?
 }
 
 
 function main() {
+    spinner.style.display = 'none';
+
     CanvasWindow.resizeCanvas();
     flag = 1;
     console.log();
