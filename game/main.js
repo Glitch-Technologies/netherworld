@@ -1,6 +1,4 @@
-import {CanvasWindow, TextWindow} from './objectWindows/window.js';
-import { KeyBehaviour } from './keyBehaviour/keyBehaviour.js';
-
+import {CanvasWindow, TextWindow, KeyBehaviour} from './GlitchEngineJS/GlitchEngine.js';
 
 window.assetsLoaded = 0;
 
