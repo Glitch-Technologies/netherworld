@@ -1,4 +1,6 @@
-import {CanvasWindow, TextWindow, KeyBehaviour} from './GlitchEngineJS/GlitchEngine.js';
+import {CanvasWindow, TextWindow, KeyBehaviour, runtimeInject} from './GlitchEngineJS/GlitchEngine.js';
+
+runtimeInject.inject(); // Needs to be included when not using minified version
 
 var viewFullScreen = document.getElementById("play-button");
 const spinner = document.getElementById('black-box');
@@ -10,6 +12,7 @@ let canvasWindow = new CanvasWindow(640, 480); //Basically not important unless 
 let textWindow;
 
 //To use fullscreen setup, just add a button and attach it likewise
+
 if (viewFullScreen) {
     viewFullScreen.addEventListener("click", function() {
         init();
