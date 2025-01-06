@@ -1,4 +1,4 @@
-import {CanvasWindow, TextWindow, KeyBehaviour, runtimeInject} from './GlitchEngineJS/GlitchEngine.js';
+import {CanvasWindow, TextWindow, KeyBehaviour, runtimeInject} from 'https://files.glitchtech.top/GE.js';
 
 runtimeInject.inject(); // Needs to be included when not using minified version
 
