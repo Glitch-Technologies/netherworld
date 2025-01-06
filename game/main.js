@@ -1,4 +1,4 @@
-import {CanvasWindow, TextWindow, KeyBehaviour, runtimeInject} from 'https://files.glitchtech.top/GE.js';
+import {CanvasWindow, TextWindow, KeyBehaviour} from 'https://files.glitchtech.top/GE.js';
 
 var viewFullScreen = document.getElementById("play-button");
 const spinner = document.getElementById('black-box');
