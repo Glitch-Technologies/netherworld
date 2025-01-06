@@ -30,7 +30,6 @@ menuPos = -1;
 LaunchHook.buttonHook(main)
 
 function main() {
-    spinner.style.display = 'none';
 
     CanvasWindow.resizeCanvas();
     CanvasWindow.canvas.style.display = "block";
