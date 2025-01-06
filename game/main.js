@@ -1,7 +1,5 @@
 import {CanvasWindow, TextWindow, KeyBehaviour, runtimeInject} from 'https://files.glitchtech.top/GE.js';
 
-//runtimeInject.inject(); // Needs to be included when not using minified version
-
 var viewFullScreen = document.getElementById("play-button");
 const spinner = document.getElementById('black-box');
 //let typingOn, typingPositionX, typingPositionY, overflowNotPermitted;
