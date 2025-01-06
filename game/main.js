@@ -16,7 +16,7 @@ menuPos = -1;
 
 if (viewFullScreen) {
     viewFullScreen.addEventListener("click", function() {
-        init(main());
+        init(main);
         CanvasWindow.fullscreenSetup(viewFullScreen);
     })
 }
@@ -24,7 +24,7 @@ if (viewFullScreen) {
 async function init(promisedFunction) {
     //This is control for variable setup and asset loading
     spinner.style.display = 'flex';
-    TextWindow.initFont().onload=async function(){TextWindow.fontLoader(this);promisedFunction;} //Super readable, right?
+    TextWindow.initFont().onload=async function(){TextWindow.fontLoader(this);main();} //Super readable, right?
 }
 
 
