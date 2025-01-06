@@ -9,22 +9,23 @@ let flag, menuPos;
 let canvasWindow = new CanvasWindow(640, 480); //Basically not important unless we need to hack direct reference ¯\_(ツ)_/¯
 let textWindow;
 
+flag = 0;
+menuPos = -1;
+
 //To use fullscreen setup, just add a button and attach it likewise
 
-if (viewFullScreen) {
-    viewFullScreen.addEventListener("click", function() {
-        init();
-        CanvasWindow.fullscreenSetup(viewFullScreen);
-    })
-}
+// if (viewFullScreen) {
+//     viewFullScreen.addEventListener("click", function() {
+//         init();
+//         CanvasWindow.fullscreenSetup(viewFullScreen);
+//     })
+// }
 
-async function init() {
-    //This is control for variable setup and asset loading
-    flag = 0;
-    menuPos = -1;
-    spinner.style.display = 'flex';
-    TextWindow.initFont().onload=async function(){TextWindow.fontLoader(this);main();} //Super readable, right?
-}
+// async function init() {
+//     //This is control for variable setup and asset loading
+//     spinner.style.display = 'flex';
+//     TextWindow.initFont().onload=async function(){TextWindow.fontLoader(this);main();} //Super readable, right?
+// }
 
 
 function main() {
