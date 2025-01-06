@@ -24,7 +24,8 @@ if (viewFullScreen) {
 async function init() {
     //This is control for variable setup and asset loading
     spinner.style.display = 'flex';
-    TextWindow.initFont().onload=async function(){TextWindow.fontLoader(this);main();} //Super readable, right?
+    TextWindow.initFont().onload=async function(){TextWindow.fontLoader(this);return;} //Super readable, right?
+    main();
 }
 
 
