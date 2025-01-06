@@ -2,7 +2,7 @@ import {CanvasWindow, TextWindow, KeyBehaviour, runtimeInject} from 'https://fil
 
 runtimeInject.inject(); // Needs to be included when not using minified version
 
-var viewFullScreen = document.getElementById("play-bsutton");
+var viewFullScreen = document.getElementById("play-button");
 const spinner = document.getElementById('black-box');
 //let typingOn, typingPositionX, typingPositionY, overflowNotPermitted;
 let flag, menuPos;
