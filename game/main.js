@@ -31,6 +31,8 @@ function main() {
     spinner.style.display = 'none';
 
     CanvasWindow.resizeCanvas();
+    CanvasWindow.canvas.style.display = "block";
+
     flag = 1;
     console.log();
     textWindow = new TextWindow(640, 480, 0, 0, 0, 0, false, KeyBehaviour.getBehaviour("menu"));
