@@ -14,18 +14,18 @@ menuPos = -1;
 
 //To use fullscreen setup, just add a button and attach it likewise
 
-// if (viewFullScreen) {
-//     viewFullScreen.addEventListener("click", function() {
-//         init();
-//         CanvasWindow.fullscreenSetup(viewFullScreen);
-//     })
-// }
+if (viewFullScreen) {
+    viewFullScreen.addEventListener("click", function() {
+        init();
+        CanvasWindow.fullscreenSetup(viewFullScreen);
+    })
+}
 
-// async function init() {
-//     //This is control for variable setup and asset loading
-//     spinner.style.display = 'flex';
-//     TextWindow.initFont().onload=async function(){TextWindow.fontLoader(this);main();} //Super readable, right?
-// }
+async function init() {
+    //This is control for variable setup and asset loading
+    spinner.style.display = 'flex';
+    TextWindow.initFont().onload=async function(){TextWindow.fontLoader(this);main();} //Super readable, right?
+}
 
 
 function main() {
