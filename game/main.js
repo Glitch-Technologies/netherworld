@@ -10,10 +10,7 @@ let textWindow;
 flag = 0;
 menuPos = -1;
 
-//LaunchHook.buttonHook(main)
-
 function main() {
-    
     flag = 1;
     console.log();
     textWindow = new TextWindow(640, 480, 0, 0, 0, 0, false, KeyBehaviour.getBehaviour("menu"));
