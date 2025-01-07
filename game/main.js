@@ -4,13 +4,13 @@ import {CanvasWindow, TextWindow, KeyBehaviour, LaunchHook} from 'https://files.
 let flag, menuPos;
 //let command = "";
 
-let canvasWindow = new CanvasWindow(640, 480); //Basically not important unless we need to hack direct reference ¯\_(ツ)_/¯
+let canvasWindow = new CanvasWindow(640, 480, main); //Basically not important unless we need to hack direct reference ¯\_(ツ)_/¯
 let textWindow;
 
 flag = 0;
 menuPos = -1;
 
-LaunchHook.buttonHook(main)
+//LaunchHook.buttonHook(main)
 
 function main() {
 
